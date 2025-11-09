@@ -1,5 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 
+export const runtime = 'edge'
+
 const API_KEY = "acc3502b6a0b4a55867ac7bacdd73425.InvyJ0Shcqq1i6uc"
 const API_URL = "https://open.bigmodel.cn/api/paas/v4/chat/completions"
 
