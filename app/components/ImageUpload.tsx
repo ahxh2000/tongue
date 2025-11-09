@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 
 interface ImageUploadProps {
   onImageChange: (file: File | null) => void
@@ -9,8 +9,13 @@ interface ImageUploadProps {
 }
 
 export default function ImageUpload({ onImageChange, onAnalyze, isAnalyzing }: ImageUploadProps) {
+  const [mounted, setMounted] = useState(false)
   const [previewUrl, setPreviewUrl] = useState<string | null>(null)
   const [dragActive, setDragActive] = useState(false)
+
+  useEffect(() => {
+    setMounted(true)
+  }, [])
 
   const handleFileSelect = (file: File) => {
     if (file && file.type.startsWith('image/')) {
@@ -52,6 +57,7 @@ export default function ImageUpload({ onImageChange, onAnalyze, isAnalyzing }: I
   }
 
   const handleCameraInput = () => {
+    if (!mounted) return
     const input = document.createElement('input')
     input.type = 'file'
     input.accept = 'image/*'
@@ -65,7 +71,21 @@ export default function ImageUpload({ onImageChange, onAnalyze, isAnalyzing }: I
     input.click()
   }
 
+  if (!mounted) {
   return (
+    <div className="w-full max-w-md">
+      <div className="card p-6">
+        <div className="animate-pulse">
+          <div className="h-6 bg-gray-200 rounded mb-4"></div>
+          <div className="h-32 bg-gray-200 rounded mb-4"></div>
+          <div className="h-10 bg-gray-200 rounded"></div>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+return (
     <div className="w-full max-w-md">
       <div className="card p-6">
         <h3 className="text-lg font-semibold mb-4 text-center">图片上传</h3>

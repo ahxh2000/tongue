@@ -1,14 +1,21 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+import { useRouter } from 'next/navigation'
 import ImageUpload from './components/ImageUpload'
 import ResultDisplay from './components/ResultDisplay'
 import Instructions from './components/Instructions'
 
 export default function HomePage() {
+  const [mounted, setMounted] = useState(false)
   const [selectedImage, setSelectedImage] = useState<File | null>(null)
   const [analysisResult, setAnalysisResult] = useState<any>(null)
   const [isAnalyzing, setIsAnalyzing] = useState(false)
+  const router = useRouter()
+
+  useEffect(() => {
+    setMounted(true)
+  }, [])
 
   const handleAnalyze = async () => {
     if (!selectedImage) return
@@ -88,7 +95,18 @@ ${analysisResult.data.analysis.suggestions.map((s: string) => `- ${s}`).join('\n
     setAnalysisResult(null)
   }
 
+  if (!mounted) {
   return (
+    <div className="min-h-screen bg-gradient-to-br from-green-50 to-blue-50 flex items-center justify-center">
+      <div className="text-center">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-green-600 mx-auto"></div>
+        <p className="mt-2 text-gray-600">加载中...</p>
+      </div>
+    </div>
+  )
+}
+
+return (
     <div className="min-h-screen bg-gradient-to-br from-green-50 to-blue-50">
       {/* 顶部标题 */}
       <header className="bg-white shadow-sm border-b">

@@ -1,5 +1,7 @@
 'use client'
 
+import { useEffect, useState } from 'react'
+
 interface ResultDisplayProps {
   result: any
   onSave: () => void
@@ -7,7 +9,29 @@ interface ResultDisplayProps {
 }
 
 export default function ResultDisplay({ result, onSave, onReset }: ResultDisplayProps) {
-  if (!result) {
+  const [mounted, setMounted] = useState(false)
+
+  useEffect(() => {
+    setMounted(true)
+  }, [])
+  if (!mounted) {
+  return (
+    <div className="w-full max-w-md">
+      <div className="card p-6">
+        <div className="animate-pulse">
+          <div className="h-6 bg-gray-200 rounded mb-4"></div>
+          <div className="space-y-2">
+            <div className="h-4 bg-gray-200 rounded"></div>
+            <div className="h-4 bg-gray-200 rounded"></div>
+            <div className="h-4 bg-gray-200 rounded"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+if (!result) {
     return (
       <div className="w-full max-w-md">
         <div className="card p-6">
